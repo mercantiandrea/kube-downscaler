@@ -26,6 +26,9 @@ spec:
           - --dry-run
           # run every minute
           - --interval=60
+        volumeMounts:
+        - mountPath: /config
+          name: downscaler-config-map
         envFrom:
           - configMapRef:
               name: kube-downscaler
@@ -40,3 +43,7 @@ spec:
           readOnlyRootFilesystem: true
           runAsNonRoot: true
           runAsUser: 1000
+      volumes:
+        - name: downscaler-config-map
+          configMap:
+            name: kube-downscaler
