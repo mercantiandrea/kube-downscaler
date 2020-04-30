@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import logging
 import time
+import os
 
 from kube_downscaler import __version__
 from kube_downscaler import cmd
@@ -61,6 +62,20 @@ def run_loop(
 ):
     handler = shutdown.GracefulShutdown()
     while True:
+        if os.path.exists("/config/EXCLUDE_NAMESPACES"):
+            exclude_namespaces=open("/config/EXCLUDE_NAMESPACES").read()
+        if os.path.exists("/config/DEFAULT_UPTIME"):
+            default_uptime=open("/config/DEFAULT_UPTIME").read()
+        if os.path.exists("/config/DEFAULT_DOWNTIME"):
+            default_downtime=open("/config/DEFAULT_DOWNTIME").read()
+        if os.path.exists("/config/UPSCALE_PERIOD"):
+            upscale_period=open("/config/UPSCALE_PERIOD").read()
+        if os.path.exists("/config/DOWNSCALE_PERIOD"):
+            downscale_period=open("/config/DOWNSCALE_PERIOD").read()
+        if os.path.exists("/config/EXCLUDE_DEPLOYMENTS"):
+            exclude_deployments=open("/config/EXCLUDE_DEPLOYMENTS").read()
+        if os.path.exists("/config/DOWNTIME_REPLICAS"):
+            downtime_replicas=open("/config/DOWNTIME_REPLICAS").read()
         try:
             scale(
                 namespace,
